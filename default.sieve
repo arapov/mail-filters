@@ -27,11 +27,11 @@ if address "To" "anton@openssl.org" {
 
 # Organize mailing list emails in dedicated directories.
 #
-if anyof(
-         header "Precedence" ["list", "bulk"],
-         exists "List-Id") {
+if exists "List-Id" {
   if header :regex "List-Id" "<([a-z_0-9-]+)[.@]" {
     set :lower "listname" "${1}";
     fileinto :create "Lists.${listname}";
   }
 }
+
+# n.b. "keep" is executed automatically, if no other action is taken.
