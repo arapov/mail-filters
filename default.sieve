@@ -18,6 +18,13 @@ if envelope "From" "anton@openssl.org" {
   setflag "\\Seen";
 }
 
+# Mark mails to me with a Blue flag.
+#
+if address "To" "anton@openssl.org" {
+  setflag "\\Flagged";
+  addflag "$MailFlagBit2";
+}
+
 # Organize mailing list emails in dedicated directories.
 #
 if anyof(
