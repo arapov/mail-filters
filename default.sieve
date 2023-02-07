@@ -9,8 +9,16 @@ require [
   "imap4flags",
   "mailbox",
   "regex",
+  "subaddress",
   "variables"
 ];
+
+# File noise from github into respective directory.
+#
+if address :detail "To" "github" {
+  fileinto :create "GitHub Noise";
+  stop;
+}
 
 # Mark all the mails from me as seen/read.
 #
