@@ -22,9 +22,9 @@ require [
 
 # GitHub notifications from private instance
 #
-if address :detail "To" "github" {
+if address :detail "Delivered-To" "github" {
   if exists "List-Id" {
-    if header :regex "List-Id" "<([a-z_0-9-].+)[.@]" {
+    if header :regex "List-Id" "<([a-z_0-9.-]+).github" {
       set :lower "reponame" "${1}";
       fileinto :create "Git.Priv.${reponame}";
     }
@@ -34,9 +34,9 @@ if address :detail "To" "github" {
 
 # GitHub notifications from public instance
 #
-if address :detail "To" "github-public" {
+if address :detail "Delivered-To" "github-public" {
   if exists "List-Id" {
-    if header :regex "List-Id" "<([a-z_0-9-].+)[.@]" {
+    if header :regex "List-Id" "<([a-z_0-9.-]+).github" {
       set :lower "reponame" "${1}";
       fileinto :create "Git.Pub.${reponame}";
     }
