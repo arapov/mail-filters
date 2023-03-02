@@ -13,10 +13,34 @@ require [
   "variables"
 ];
 
-# File noise from github into respective directory.
+# File noise into respective directory.
+#
+#if address "From" "noisy@mail.yo" {
+#  fileinto "Noise";
+#  stop;
+#}
+
+# GitHub notifications from private instance
 #
 if address :detail "To" "github" {
-  fileinto :create "GitHub Noise";
+  if exists "List-Id" {
+    if header :regex "List-Id" "<([a-z_0-9-].+)[.@]" {
+      set :lower "reponame" "${1}";
+      fileinto :create "Git.Priv.${reponame}";
+    }
+  }
+  stop;
+}
+
+# GitHub notifications from public instance
+#
+if address :detail "To" "github-public" {
+  if exists "List-Id" {
+    if header :regex "List-Id" "<([a-z_0-9-].+)[.@]" {
+      set :lower "reponame" "${1}";
+      fileinto :create "Git.Pub.${reponame}";
+    }
+  }
   stop;
 }
 
