@@ -26,7 +26,7 @@ if address :detail "Delivered-To" "github" {
   if exists "List-Id" {
     if header :regex "List-Id" "<([a-z_0-9.-]+).github" {
       set :lower "reponame" "${1}";
-      fileinto :create "Git.Priv.${reponame}";
+      fileinto :create "GitPriv.${reponame}";
     }
   }
   stop;
@@ -38,7 +38,7 @@ if address :detail "Delivered-To" "github-public" {
   if exists "List-Id" {
     if header :regex "List-Id" "<([a-z_0-9.-]+).github" {
       set :lower "reponame" "${1}";
-      fileinto :create "Git.Pub.${reponame}";
+      fileinto :create "GitPub.${reponame}";
     }
   }
   stop;
