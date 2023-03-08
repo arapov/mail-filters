@@ -13,6 +13,12 @@ require [
   "variables"
 ];
 
+# Fsck Spam
+#
+if envelope "From" "info@nsl.litres.ru" {
+  fileinto "Junk";
+  stop;
+}
 
 # Organize mailing list emails in dedicated directories.
 #
