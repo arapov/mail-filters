@@ -23,11 +23,18 @@ require [
 # GitHub notifications from private instance
 #
 if address :detail "Delivered-To" "github" {
-  if exists "List-Id" {
-    if header :regex "List-Id" "<([a-z_0-9.-]+).github" {
-      set :lower "reponame" "${1}";
-      fileinto :create "GitPriv.${reponame}";
-    }
+  if header :regex "Message-ID" "<([a-z_0-9]+)\\/([a-z_0-9]+)" {
+    set :lower "org" "${1}";
+    set :lower "repo" "${2}";
+    fileinto :create "GitPriv.${org}-${repo}";
+  }
+  stop;
+}
+elsif envelope "From" "noreply@reply.github.openssl.org" {
+  if header :regex "Message-ID" "<([a-z_0-9]+)\\/([a-z_0-9]+)" {
+    set :lower "org" "${1}";
+    set :lower "repo" "${2}";
+    fileinto :create "Public.${org}-${repo}";
   }
   stop;
 }
@@ -35,11 +42,10 @@ if address :detail "Delivered-To" "github" {
 # GitHub notifications from public instance
 #
 if address :detail "Delivered-To" "github-public" {
-  if exists "List-Id" {
-    if header :regex "List-Id" "<([a-z_0-9.-]+).github" {
-      set :lower "reponame" "${1}";
-      fileinto :create "GitPub.${reponame}";
-    }
+  if header :regex "Message-ID" "<([a-z_0-9]+)\\/([a-z_0-9]+)" {
+    set :lower "org" "${1}";
+    set :lower "repo" "${2}";
+    fileinto :create "Private.${org}-${repo}";
   }
   stop;
 }
